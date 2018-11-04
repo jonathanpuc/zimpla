@@ -1,6 +1,6 @@
 import React, { useReducer, useState } from 'react'
 import styled from 'styled-components'
-import InputGroup from '../shared/InputGroup'
+import FormInputGroup from './FormInputGroup'
 
 
 export default function Create() {
@@ -60,7 +60,7 @@ export default function Create() {
                 <p>Welcome back Starlord. Looking to create a new mastermind?</p>
                 <p>Let's do it.</p>
             </Instructions>
-            <InputGroup onSubmit={handleSubmit} placeholder='Group name' />
+            <FormInputGroup margin onSubmit={handleSubmit} placeholder='Group name' />
         </div>
     )
 
@@ -70,7 +70,7 @@ export default function Create() {
                 <p>What is the purpose of this mastermind group?</p>
                 <p>In a sentence, what is this group about?</p>
             </Instructions>
-            <InputGroup onSubmit={handleSubmit} placeholder='Saving the galaxy' />
+            <FormInputGroup margin onSubmit={handleSubmit} placeholder='Saving the galaxy' />
         </div>
     )
 
@@ -78,10 +78,23 @@ export default function Create() {
     const ThirdStage = () => (
         <div>
             <Instructions>
-                <p>What is the purpose of this mastermind group?</p>
-                <p>In a sentence, what is this group about?</p>
+                <p>Not much of a group if it’s just you. Let’s expand.</p>
+                <p>Invite your fellow masterminds</p>
             </Instructions>
-            <InputGroup onSubmit={handleSubmit} placeholder='Antman@gmail.com' invites={true} />
+            <FormInputGroup margin onSubmit={handleSubmit} placeholder='Antman@gmail.com' invites={true} />
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center'
+            }}>
+                <MembersList>
+                    <li>Members</li>
+                    {groupMembers.map((member, i) => (
+                        <li key={`${member}-${i}`}>{member}</li>
+                    ))}
+                </MembersList>
+                <DoneButton>Done</DoneButton>
+            </div>
         </div>
     )
 
@@ -91,28 +104,14 @@ export default function Create() {
             {
                 state.currentStage === 1 ? <FirstStage /> : state.currentStage === 2 ? <SecondStage /> : <ThirdStage />
             }
-            {
-                state.currentStage === 3 && (
-                    <div>
-                        <button>Done</button>
 
-                        <div>
-                            <p>Members</p>
-                            <ul>
-                                {groupMembers.map((member, i) => (
-                                    <li key={`${member}-${i}`}>{member}</li>
-                                ))}
-                            </ul>
-
-                        </div>
-                    </div>
-                )
-            }
         </Outer>
     )
 }
 
 const Outer = styled.div`
+    width: 95%;
+    margin: 0 auto;
     h2 {
         text-transform: uppercase;
         font-size: 6.4rem;
@@ -123,6 +122,7 @@ const Outer = styled.div`
 
 const Instructions = styled.div`
     text-align: center;
+    margin-bottom: 5rem;
     p {
         font-family: 'Libre Baskerville';
         font-weight: bold;
@@ -132,5 +132,34 @@ const Instructions = styled.div`
     p:last-child {
         font-weight: 300;
         font-size: 1.7rem;
+    }
+`
+
+const DoneButton = styled.button`
+    width: 150px;
+    height: 30px;
+    font-size: 12px;
+    font-weight: 500;
+    border: none;
+    text-transform: uppercase;
+    color: #fff;
+    border-radius: 4px;
+    background-color: ${props => props.theme.colors.orange};
+`
+
+const MembersList = styled.ul`
+    padding: 10px 0px;
+    width: 250px;
+    max-height: 150px;
+    overflow: scroll;
+    border-bottom: 1px solid ${props => props.theme.colors.grey};
+    text-transform: uppercase;
+    > li:first-child {
+        font-weight: bold;
+        color: ${props => props.theme.colors.grey};
+    }
+    li {
+    font-size: 1.2rem;
+       padding: 10px; 
     }
 `

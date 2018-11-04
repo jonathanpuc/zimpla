@@ -11,9 +11,18 @@ body {
   font-family: 'Montserrat', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  letter-spacing: .85px;
   font-size: 1.6rem;
+  color: #3e3c3c;
 }
+
+ul {
+  padding: 0px;
+}
+
+li {
+  list-style-type: none;
+}
+
 
 @media only screen and (max-width: 400px) {
   html {

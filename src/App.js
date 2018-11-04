@@ -5,7 +5,16 @@ import { ThemeProvider } from 'styled-components'
 
 const theme = {
   colors: {
-    orange: '#FFA722'
+    orange: '#FFA722',
+    blue: '#2EB9FF',
+    grey: '#C8C8C8'
+  },
+  spacing: {
+    margin: {
+      small: '1rem',
+      medium: '1.5rem',
+      large: '1.8'
+    }
   }
 }
 
