@@ -1,6 +1,4 @@
-# Project Title
-
-Zimpla.
+# Zimpla
 
 Zimpla allows like-minded individuals to create and join mastermind groups to chat and create goals with a sense of accountability.
 
