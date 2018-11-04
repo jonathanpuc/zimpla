@@ -2,8 +2,9 @@ import React, { useReducer, useState } from 'react'
 import styled from 'styled-components'
 import FormInputGroup from './FormInputGroup'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import { withRouter } from 'react-router-dom'
 
-export default function Create() {
+function Create({ history }) {
 
     const [groupName, setGroupName] = useState('')
     const [groupDescription, setGroupDescription] = useState('')
@@ -53,6 +54,22 @@ export default function Create() {
 
     function finishOnboarding() {
         setComplete(true)
+        setTimeout(() => history.push('/'), 3000)
+        const group = {
+            name: groupName,
+            description: groupDescription,
+            members: groupMembers
+        }
+        localStorage.setItem('zimpla-data', JSON.stringify({
+            profile: {
+                name: 'starlord'
+            },
+            groups: [group],
+            session: {
+                onboardingComplete: true
+            }
+        }))
+
     }
 
 
@@ -98,7 +115,8 @@ export default function Create() {
                 <ReactCSSTransitionGroup
                     transitionName='stage'
                     transitionEnterTimeout={500}
-                    transitionLeaveTimeout={300}>
+                    transitionLeaveTimeout={300}
+                >
                     {
                         stage
                     }
@@ -138,6 +156,8 @@ export default function Create() {
         </Outer>
     )
 }
+
+export default withRouter(Create)
 
 const Outer = styled.div`
     width: 95%;
