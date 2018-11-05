@@ -1,19 +1,20 @@
 import React from 'react';
 import styled from 'styled-components'
 import profile from '../img/starlord.png'
+import ProfilePhoto from '../shared/ProfilePhoto'
 
 export default function Header() {
-    return (
-        <Outer>
-            <Container>
-                <div>
-                    <img src={profile} alt="profile" />
-                    <p>Starlord</p>
-                </div>
-                <h1>Zimpla</h1>
-            </Container>
-        </Outer>
-    )
+  return (
+    <Outer>
+      <Container>
+        <div>
+          <ProfilePhoto photo={profile} name="starlord" />
+          <p>Starlord</p>
+        </div>
+        <h1>Zimpla</h1>
+      </Container>
+    </Outer>
+  )
 }
 
 const Outer = styled.div`
@@ -30,13 +31,6 @@ const Container = styled.div`
     display: flex;
     text-transform: uppercase;
     font-weight: bold;
-    img {
-      width: 5rem;
-      height: 5rem;
-      border-radius: 50%;
-      border: 1px solid #c5c5c5;
-      margin-right: 1rem;
-    }
   }
 
   h1 {

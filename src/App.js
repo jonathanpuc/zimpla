@@ -7,7 +7,8 @@ const theme = {
     orange: '#FFA722',
     blue: '#2EB9FF',
     grey: '#C8C8C8',
-    greyMedium: '#9A9A9A'
+    greyMedium: '#9A9A9A',
+    greenFluro: '#50E3C2'
   },
   spacing: {
     margin: {

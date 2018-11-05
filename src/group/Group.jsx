@@ -5,6 +5,7 @@ import * as styles from '../shared/styled'
 import PageHeading from '../shared/PageHeading'
 import GroupSymbol from '../shared/GroupSymbol'
 import Tabs from './Tabs'
+import Goals from './Goals'
 
 function Group({ match }) {
 
@@ -25,6 +26,7 @@ function Group({ match }) {
                 <GroupSymbol />
             </GroupHeader>
             <Tabs />
+            <Goals goals={group.goals} members={group.members} />
         </Outer>
     )
 }
