@@ -1,13 +1,13 @@
 import React from 'react';
 import styled from 'styled-components'
-import profile from '../img/profile.png'
+import profile from '../img/starlord.png'
 
 export default function Header() {
     return (
         <Outer>
             <Container>
                 <div>
-                    <img src={profile} alt="profile photo" />
+                    <img src={profile} alt="profile" />
                     <p>Starlord</p>
                 </div>
                 <h1>Zimpla</h1>

@@ -3,7 +3,8 @@ import styled from 'styled-components'
 import FormInputGroup from './FormInputGroup'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { withRouter } from 'react-router-dom'
-
+import PageHeading from '../shared/PageHeading'
+import { mockGroup } from '../shared/mockData'
 function Create({ history }) {
 
     const [groupName, setGroupName] = useState('')
@@ -54,17 +55,20 @@ function Create({ history }) {
 
     function finishOnboarding() {
         setComplete(true)
-        setTimeout(() => history.push('/'), 3000)
+        setTimeout(() => history.push('/'), 500)
         const group = {
+            id: 'Gjqh782YohW928',
             name: groupName,
             description: groupDescription,
-            members: groupMembers
+            members: groupMembers.map(member => ({ name: member, photo: '' })),
+            messages: [],
+            goals: []
         }
         localStorage.setItem('zimpla-data', JSON.stringify({
             profile: {
                 name: 'starlord'
             },
-            groups: [group],
+            groups: [mockGroup, group],
             session: {
                 onboardingComplete: true
             }
@@ -111,7 +115,7 @@ function Create({ history }) {
     return (
         <Outer >
             <div className={complete ? 'onboarding' : ''}>
-                <h2>Create</h2>
+                <PageHeading>Create</PageHeading>
                 <ReactCSSTransitionGroup
                     transitionName='stage'
                     transitionEnterTimeout={500}
@@ -168,12 +172,6 @@ const Outer = styled.div`
         transition: all 0.5s linear;
     }
 
-    h2 {
-        text-transform: uppercase;
-        font-size: 6.4rem;
-        font-weight: 500;
-        color: #EEEEEE;
-    }
 
 
     .stage-enter {

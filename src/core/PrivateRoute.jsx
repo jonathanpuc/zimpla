@@ -18,7 +18,6 @@ export default class PrivateRoute extends React.Component {
 
             if (cachedData.session.onboardingComplete) {
                 this.setState({ loading: false, onboardingComplete: true })
-                console.log('ran')
             } else {
                 this.setState({ loading: false })
             }

@@ -1,13 +1,13 @@
 import React from 'react';
 import Header from './core/Header'
-import Create from './create/Create'
 import { ThemeProvider } from 'styled-components'
 import Routes from './core/Routes'
 const theme = {
   colors: {
     orange: '#FFA722',
     blue: '#2EB9FF',
-    grey: '#C8C8C8'
+    grey: '#C8C8C8',
+    greyMedium: '#9A9A9A'
   },
   spacing: {
     margin: {
@@ -20,15 +20,11 @@ const theme = {
 
 class App extends React.Component {
 
-
-
-
   render() {
     return (
       <ThemeProvider theme={theme}>
         <div className="App">
           <Header />
-          {/* <Create /> */}
           <Routes />
         </div>
       </ThemeProvider>

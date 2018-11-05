@@ -6,3 +6,10 @@ export function fadeUp() {
     `
 
 }
+
+export function fadeIn() {
+    return keyframes`
+        from {opacity: 0;}
+        to {opacity: 1;}
+    `
+}
