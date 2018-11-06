@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import { fadeIn } from '../shared/animations'
-export default function Tabs() {
+export default function Tabs({ onTabChange }) {
 
     const [activeTab, setActiveTab] = useState('goals')
 
     function handleTabClick(tab) {
         setActiveTab(tab)
+        onTabChange(tab)
     }
 
     function activeUnderline() {

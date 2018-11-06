@@ -32,6 +32,7 @@ export const mockGroup = {
     ],
     goals: [
         {
+            id: 'yass',
             createdAt: '05/10/2001',
             createdBy: 'Rocket',
             completed: true,
@@ -71,6 +72,7 @@ export const mockGroup = {
             ]
         },
         {
+            id: 'yooo',
             createdAt: '05/10/2001',
             createdBy: 'Starlord',
             completed: true,
@@ -100,6 +102,7 @@ export const mockGroup = {
             ]
         },
         {
+            id: 'taaa',
             createdAt: '07/02/2002',
             createdBy: 'Drax',
             completed: false,

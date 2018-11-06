@@ -1,20 +1,41 @@
-import React, { useState } from 'react'
+import React, { lazy, Suspense, useState } from 'react'
 import { withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 import * as styles from '../shared/styled'
 import PageHeading from '../shared/PageHeading'
 import GroupSymbol from '../shared/GroupSymbol'
 import Tabs from './Tabs'
-import Goals from './Goals'
+
+const Goals = lazy(() => import('./Goals'))
 
 function Group({ match }) {
+    const { id } = match.params
+    const appData = JSON.parse(localStorage.getItem('zimpla-data'))
+    const group = appData.groups.find(group => group.id === id)
+    const [visibleTab, setVisibleTab] = useState('goals')
 
-    const [group] = useState(() => {
-        const { id } = match.params
-        const data = JSON.parse(localStorage.getItem('zimpla-data'))
-        const group = data.groups.find(group => group.id === id)
-        return group
-    })
+    function saveAppData(newData) {
+        const currentData = JSON.parse(localStorage.getItem('zimpla-data'))
+        localStorage.setItem('zimpla-data', JSON.stringify({
+            ...currentData,
+            ...newData
+        }))
+    }
+
+    function handleGroupChange(changes) {
+        const updatedGroups = appData.groups.map(group => {
+            if (group.id === id) {
+                return { ...group, ...changes }
+            }
+            return group
+        })
+
+        saveAppData({ groups: updatedGroups })
+
+    }
+    function handleGoalsChanges(goalsData) {
+        handleGroupChange({ goals: goalsData })
+    }
 
     return (
         <Outer>
@@ -25,8 +46,28 @@ function Group({ match }) {
                 </GroupHeading>
                 <GroupSymbol />
             </GroupHeader>
-            <Tabs />
-            <Goals goals={group.goals} members={group.members} />
+
+            <Tabs onTabChange={(tab) => setVisibleTab(tab)} />
+            <TabContent isVisible={visibleTab === 'messages'}>
+                <div>Messages</div>
+
+            </TabContent>
+
+            <TabContent isVisible={visibleTab === 'goals'}>
+                <Suspense fallback={<div>Loading</div>}>
+                    <Goals
+                        goals={group.goals}
+                        members={group.members}
+                        onGoalsChanges={handleGoalsChanges}
+                    />
+                </Suspense>
+            </TabContent>
+
+            <TabContent isVisible={visibleTab === 'members'}>
+                <div>Members</div>
+            </TabContent>
+
+
         </Outer>
     )
 }
@@ -48,7 +89,7 @@ const GroupHeader = styled.div`
 const GroupHeading = styled.div`
     h2 {
     text-transform: uppercase;
-    font-size: 5.4rem;
+    font-size: 5rem;
     font-weight: 500;
     color: ${props => props.theme.colors.greyMedium};
     margin-bottom: 0px;
@@ -61,6 +102,10 @@ const GroupHeading = styled.div`
         font-size: 1.5rem;
         color: ${props => props.theme.colors.greyMedium};
     }
+`
+
+const TabContent = styled.div`
+    display: ${props => props.isVisible ? 'block' : 'none'};
 `
 
 export default withRouter(Group)
