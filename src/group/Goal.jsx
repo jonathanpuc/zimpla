@@ -4,15 +4,18 @@ import ProfilePhoto from '../shared/ProfilePhoto'
 import tick from '../img/tick.png'
 import tickGrey from '../img/tick-grey.png'
 import chat from '../img/chat.png'
-export default function Goal({ creator, goal, onEditGoal }) {
+export default function Goal({ creator, goal, onEditGoal, onGoalOpen }) {
 
     function toggleCompleted() {
-        console.log('yo', goal.id)
         onEditGoal(goal.id, { completed: !goal.completed })
     }
 
+    function handleGoalOpen() {
+        onGoalOpen(goal.id)
+    }
+
     return (
-        <Outer>
+        <Outer onClick={handleGoalOpen}>
             <div>
                 <Checkbox onClick={toggleCompleted} completed={goal.completed ? true : false}>
                     {goal.completed ? <img src={tick} alt="completed" /> : <img src={tickGrey} alt="uncompleted" />}
@@ -43,6 +46,11 @@ const Outer = styled.div`
         display: flex;
         align-items: center;
     }
+    cursor: pointer;
+    &:hover {
+        background-color: #f9f8f8;
+    }
+    transition: background-color 250ms linear;
 `
 
 const Checkbox = styled.div`

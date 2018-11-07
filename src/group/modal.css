@@ -1,0 +1,56 @@
+@keyframes dropdown {
+    0% {
+        transform: translate(-50%, -1000%);
+    }
+
+    50% {
+        transform: translate(-50%, -40%);
+    }
+
+    100% {
+        transform: translate(-50%, -50%);
+    }
+
+}
+
+@keyframes goup {
+    0% {
+        transform: translate(-50%, -50%);
+    }
+
+
+    100% {
+        transform: translate(-50%, -1000%);
+    }
+
+}
+
+/* .ReactModal__Content {
+    animation: dropDown;
+    animation-duration: 2s;
+} */
+
+.ReactModal__Content {
+    opacity: 0;
+}
+
+
+.ReactModal__Overlay {
+    transition: opacity 200ms ease-in-out;
+    background: rgba(0, 0, 0, 0.15);
+}
+
+.ReactModal__Content--after-open {
+    opacity: 1;
+    transition: opacity 150ms;
+    animation: dropdown;
+    animation-duration: 1000ms;
+}
+
+
+.ReactModal__Content--before-close {
+    /* opacity: 0;
+    transition: opacity 150ms 500ms; */
+    animation: goup;
+    animation-duration: 1000ms;
+}

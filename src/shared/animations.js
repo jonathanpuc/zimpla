@@ -13,3 +13,21 @@ export function fadeIn() {
         to {opacity: 1;}
     `
 }
+
+// export function dropDown() {
+//     return keyframes` {
+//         0% {
+//           transform: translate(-50%, -1000%);
+//         }
+
+//         50% {
+//           transform: translate(-50%, -40%);
+//         }
+
+//         100% {
+//           transform: translate(-50%, -50%);
+//         }
+
+
+//       }`
+// }
