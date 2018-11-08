@@ -74,7 +74,7 @@ export const mockGroup = {
         {
             id: 'yooo',
             createdAt: '05/10/2001',
-            createdBy: 'Starlord',
+            createdBy: 'Groot',
             completed: true,
             description: 'I am Groot',
             deadline: '15/05/2001',

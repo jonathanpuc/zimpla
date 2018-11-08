@@ -29,3 +29,9 @@ li {
     font-size: 54%;
   }
 }
+
+@media only screen and (max-width: 400px) {
+  html {
+    font-size: 45%;
+  }
+}

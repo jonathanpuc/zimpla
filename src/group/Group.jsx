@@ -106,6 +106,7 @@ const GroupHeading = styled.div`
 
 const TabContent = styled.div`
     display: ${props => props.isVisible ? 'block' : 'none'};
+    min-height: 250px;
 `
 
 export default withRouter(Group)

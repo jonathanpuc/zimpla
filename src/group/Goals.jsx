@@ -3,7 +3,7 @@ import Modal from 'react-modal';
 import styled from 'styled-components'
 import Goal from './Goal'
 import EmptyState from './EmptyState'
-
+import GoalModalContent from './GoalModalContent'
 import './modal.css'
 
 const customStyles = {
@@ -14,6 +14,7 @@ const customStyles = {
         bottom: 'auto',
         marginRight: '-50%',
         transform: 'translate(-50%, -50%)',
+        maxWidth: '70%'
     }
 };
 
@@ -42,6 +43,7 @@ export default function Goals({ goals, members, onGoalsChanges }) {
                     modal: {
                         showing: true,
                         component: 'goal',
+                        goalId: action.payload
                     }
                 }
             case 'HIDE_MODAL':
@@ -57,7 +59,7 @@ export default function Goals({ goals, members, onGoalsChanges }) {
                     ...state
                 }
         }
-    }, { goals, modal: { showing: false, component: '' } })
+    }, { goals, modal: { showing: false, component: '', goalId: '' } })
 
     function handleEditGoal(id, changes) {
         const updatedGoals = state.goals.map(goal => {
@@ -68,11 +70,17 @@ export default function Goals({ goals, members, onGoalsChanges }) {
         })
         dispatch({ type: 'UPDATE_GOAL', payload: updatedGoals })
         onGoalsChanges(updatedGoals)
+        if (state.modal.showing && state.modal.goalId === id) {
+            console.log('yep')
+            const updatedGoal = updatedGoals.find(goal => goal.id === id)
+            console.log(updatedGoal)
+            setModalGoal(updatedGoal)
+        }
     }
 
     function showModal(component, goalId = false) {
         if (component && goalId) {
-            const modalGoal = goals.find(goal => goal.id === goalId)
+            const modalGoal = state.goals.find(goal => goal.id === goalId)
             setModalGoal(modalGoal)
             console.log(modalGoal)
             dispatch({ type: 'SHOW_GOAL_MODAL', payload: goalId })
@@ -102,14 +110,15 @@ export default function Goals({ goals, members, onGoalsChanges }) {
                 closeTimeoutMS={250}
             >
                 {modalGoal && (
-                    <>
-                        <h2>{modalGoal.description}</h2>
-                        <button onClick={closeModal}>close</button>
-                        <div>I am a modal</div>
-                    </>
+                    <GoalModalContent
+                        creator={members.find(member => member.name === modalGoal.createdBy)}
+                        {...modalGoal}
+                        members={members}
+                        onCloseModal={closeModal}
+                        onEditGoal={handleEditGoal}
+                    />
                 )
                 }
-
             </Modal>
 
             {

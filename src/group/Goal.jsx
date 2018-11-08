@@ -4,11 +4,7 @@ import ProfilePhoto from '../shared/ProfilePhoto'
 import tick from '../img/tick.png'
 import tickGrey from '../img/tick-grey.png'
 import chat from '../img/chat.png'
-export default function Goal({ creator, goal, onEditGoal, onGoalOpen }) {
-
-    function toggleCompleted() {
-        onEditGoal(goal.id, { completed: !goal.completed })
-    }
+export default function Goal({ creator, goal, onGoalOpen }) {
 
     function handleGoalOpen() {
         onGoalOpen(goal.id)
@@ -17,7 +13,7 @@ export default function Goal({ creator, goal, onEditGoal, onGoalOpen }) {
     return (
         <Outer onClick={handleGoalOpen}>
             <div>
-                <Checkbox onClick={toggleCompleted} completed={goal.completed ? true : false}>
+                <Checkbox completed={goal.completed ? true : false}>
                     {goal.completed ? <img src={tick} alt="completed" /> : <img src={tickGrey} alt="uncompleted" />}
                 </Checkbox>
                 <ProfilePhoto {...creator} />

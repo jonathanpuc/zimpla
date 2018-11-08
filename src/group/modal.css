@@ -32,6 +32,18 @@
 
 .ReactModal__Content {
     opacity: 0;
+    box-shadow:
+        0 4px 8px 0 rgba(0, 0, 0, 0.12),
+        0 2px 4px 0 rgba(0, 0, 0, 0.08);
+
+
+}
+
+@media only screen and (max-width: 400px) {
+    .ReactModal__Content {
+        max-height: 400px;
+        overflow: hidden !important;
+    }
 }
 
 
