@@ -1,11 +1,12 @@
 @keyframes dropdown {
     0% {
-        transform: translate(-50%, -1000%);
+        transform: translate(-50%, -1000px);
     }
 
+    /* 
     50% {
         transform: translate(-50%, -40%);
-    }
+    } */
 
     100% {
         transform: translate(-50%, -50%);
@@ -20,7 +21,7 @@
 
 
     100% {
-        transform: translate(-50%, -1000%);
+        transform: translate(-50%, -1000px);
     }
 
 }
@@ -42,7 +43,7 @@
 @media only screen and (max-width: 400px) {
     .ReactModal__Content {
         max-height: 400px;
-        overflow: hidden !important;
+
     }
 }
 
@@ -57,6 +58,7 @@
     transition: opacity 150ms;
     animation: dropdown;
     animation-duration: 1000ms;
+    animation-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 
@@ -65,4 +67,5 @@
     transition: opacity 150ms 500ms; */
     animation: goup;
     animation-duration: 1000ms;
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
 }

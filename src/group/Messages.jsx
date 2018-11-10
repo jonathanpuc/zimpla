@@ -178,7 +178,8 @@ const Outer = styled.div`
     > div:first-child {
         opacity: 1;
   transform: scale(1);
-  transition: all 500ms ease-in;
+  transition: opacity 500ms ease-in,
+  transform 500ms ease-in;
     }
 
 }

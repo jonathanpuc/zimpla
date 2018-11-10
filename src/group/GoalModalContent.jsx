@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import styled from 'styled-components'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import ProfilePhoto from '../shared/ProfilePhoto'
 import GoalCompleteButton from './GoalCompleteButton'
 import moment from 'moment'
@@ -16,23 +17,52 @@ export default function GoalModalContent({
     onEditGoal
 }) {
 
+    const commentsListEl = useRef(null)
+
+    const [commentText, setCommentText] = useState('')
+
     function toggleCompleted() {
         onEditGoal(id, { completed: !completed })
     }
 
+    function handleCommentInput(e) {
+        setCommentText(e.target.value)
+    }
+
+    useEffect(() => {
+        commentsListEl.current.scrollTop = commentsListEl.current.scrollHeight
+    }, [comments])
+
+    function submitComment(e) {
+        e.preventDefault()
+        const appData = JSON.parse(localStorage.getItem('zimpla-data'))
+        const { name } = appData.profile
+        const comment = {
+            publishedBy: name,
+            date: moment().format(),
+            text: commentText
+        }
+        onEditGoal(id, {
+            comments: [...comments, comment]
+        })
+
+
+    }
+
 
     function renderComment({ publishedBy, date, text }) {
-        const publisher = members.find(member => member.name === publishedBy)
+        const publisher = members.find(member => member.name.toLowerCase() === publishedBy.toLowerCase())
         return (
             <Comment key={publishedBy + date + text}>
                 <ProfilePhoto photo={publisher.photo} name={publisher.name} small />
                 <div className='comment-text'>
                     {text}
                 </div>
-                <div className='comment-date'>{moment(createdAt).startOf('day').fromNow()}</div>
+                <div className='comment-date'>{moment(date).calendar()}</div>
             </Comment>
         )
     }
+
 
 
     return (
@@ -58,9 +88,19 @@ export default function GoalModalContent({
 
             </CompletionDetails>
             <hr />
-            <CommentsList>
-                {comments.map((comment, i) => renderComment(comment))}
+            <CommentsList id='goal-comments-list' ref={commentsListEl}>
+                <ReactCSSTransitionGroup
+                    transitionName="comment"
+                    transitionEnterTimeout={500}
+                    transitionLeaveTimeout={300}>
+                    {comments.map(comment => renderComment(comment))}
+                </ReactCSSTransitionGroup>
             </CommentsList>
+            <FormContainer>
+                <form onSubmit={submitComment}>
+                    <CommentInput value={commentText} onChange={handleCommentInput} placeholder="Write a comment..." />
+                </form>
+            </FormContainer>
 
         </div>
     )
@@ -106,6 +146,18 @@ const CompletionDetails = styled(FlexBetweenAlign)`
 const CommentsList = styled.div`
     max-height: 300px;
     overflow: scroll;
+
+.comment-enter {
+ opacity: 0.01;
+
+}
+
+.comment-enter.comment-enter-active {
+    opacity: 1;
+    transition: opacity 500ms ease-in;
+
+}
+
 `
 
 const Comment = styled.div`
@@ -126,7 +178,25 @@ const Comment = styled.div`
         color: #A1A1A1;
         font-size: 11px;
     }
-
-
 `
 
+const CommentInput = styled.input`
+
+    color: #9B9B9B;
+    border-radius: 5px;
+    display: block;
+    width: 60%;
+    font-size: 1.3rem;
+    padding: 8px;
+    margin: 0 auto;
+`
+
+const FormContainer = styled.div`
+    display: block;
+    padding: 10px;
+    background-color: #fff;
+    @media only screen and (max-width: 400px) {
+        position: sticky;
+        bottom: 0;
+    }
+`

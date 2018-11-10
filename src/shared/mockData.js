@@ -41,32 +41,32 @@ export const mockGroup = {
             comments: [
                 {
                     publishedBy: 'Gamora',
-                    date: '24/11/2001',
+                    date: '11/24/2001',
                     text: "We're using this to set goals, not manage chores!"
                 },
                 {
                     publishedBy: 'Rocket',
-                    date: '25/11/2001',
+                    date: '11/25/2001',
                     text: 'Bite me, what size is Groot?'
                 },
                 {
                     publishedBy: 'Groot',
-                    date: '26/11/2001',
+                    date: '11/26/2001',
                     text: 'I am Groot'
                 },
                 {
                     publishedBy: 'Drax',
-                    date: '26/11/2001',
+                    date: '11/26/2001',
                     text: 'He is an extra large'
                 },
                 {
                     publishedBy: 'Rocket',
-                    date: '26/11/2001',
+                    date: '11/26/2001',
                     text: "What, no he isn't"
                 },
                 {
                     publishedBy: 'Gamora',
-                    date: '27/11/2001',
+                    date: '11/27/2001',
                     text: "XS should be fine"
                 },
             ]
@@ -81,7 +81,7 @@ export const mockGroup = {
             comments: [
                 {
                     publishedBy: 'Groot',
-                    date: '26/04/2001',
+                    date: '04/26/2001',
                     text: "I am Groot"
                 },
                 {
@@ -111,12 +111,12 @@ export const mockGroup = {
             comments: [
                 {
                     publishedBy: 'Starlord',
-                    date: '17/01/2001',
+                    date: '01/17/2001',
                     text: 'Thats a big goal you got there buddy'
                 },
                 {
                     publishedBy: 'Rocket',
-                    date: '17/01/2001',
+                    date: '01/17/2001',
                     text: "Insane right? Better chance of running into a Norse god."
                 }
             ]
