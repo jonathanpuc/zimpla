@@ -77,7 +77,7 @@ export const mockGroup = {
             createdBy: 'Groot',
             completed: true,
             description: 'I am Groot',
-            deadline: '15/05/2001',
+            deadline: '04/15/2001',
             comments: [
                 {
                     publishedBy: 'Groot',
@@ -107,7 +107,7 @@ export const mockGroup = {
             createdBy: 'Drax',
             completed: false,
             description: 'Find and destroy Thanos',
-            deadline: '15/05/2001',
+            deadline: '05/15/2001',
             comments: [
                 {
                     publishedBy: 'Starlord',

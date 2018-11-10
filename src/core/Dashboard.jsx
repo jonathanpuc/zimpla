@@ -8,7 +8,6 @@ function Dashboard({ history }) {
 
     const [groups] = useState(() => {
         const data = JSON.parse(localStorage.getItem('zimpla-data'))
-        console.log(data.groups)
         return data.groups
     })
 

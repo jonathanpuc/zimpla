@@ -4,6 +4,9 @@ import styled from 'styled-components'
 import Goal from './Goal'
 import EmptyState from './EmptyState'
 import GoalModalContent from './GoalModalContent'
+import CreateGoalModalContent from './CreateGoalModalContent'
+import { getContentAuthorProfile } from '../lib/helpers'
+import Button from '../shared/Button'
 import './modal.css'
 
 const customStyles = {
@@ -14,6 +17,7 @@ const customStyles = {
         bottom: 'auto',
         marginRight: '-50%',
         transform: 'translate(-50%, -50%)',
+        width: '500px',
         maxWidth: '70%',
         paddingBottom: '0px'
     }
@@ -22,6 +26,7 @@ const customStyles = {
 export default function Goals({ goals, members, onGoalsChanges }) {
 
     const [modalGoal, setModalGoal] = useState({})
+    const [createModalType, setCreateModalType] = useState(false)
 
     const [state, dispatch] = useReducer((state, action) => {
         switch (action.type) {
@@ -30,12 +35,11 @@ export default function Goals({ goals, members, onGoalsChanges }) {
                     ...state,
                     goals: action.payload
                 }
-            case 'SHOW_CREATE_MODAL':
+            case 'SHOW_MODAL':
                 return {
                     ...state,
                     modal: {
                         showing: true,
-                        component: 'create'
                     }
                 }
             case 'SHOW_GOAL_MODAL':
@@ -43,7 +47,6 @@ export default function Goals({ goals, members, onGoalsChanges }) {
                     ...state,
                     modal: {
                         showing: true,
-                        component: 'goal',
                         goalId: action.payload
                     }
                 }
@@ -60,7 +63,7 @@ export default function Goals({ goals, members, onGoalsChanges }) {
                     ...state
                 }
         }
-    }, { goals, modal: { showing: false, component: '', goalId: '' } })
+    }, { goals, modal: { showing: false, goalId: '' } })
 
     function handleEditGoal(id, changes) {
         const updatedGoals = state.goals.map(goal => {
@@ -72,47 +75,49 @@ export default function Goals({ goals, members, onGoalsChanges }) {
         dispatch({ type: 'UPDATE_GOAL', payload: updatedGoals })
         onGoalsChanges(updatedGoals)
         if (state.modal.showing && state.modal.goalId === id) {
-            console.log('yep')
             const updatedGoal = updatedGoals.find(goal => goal.id === id)
-            console.log(updatedGoal)
             setModalGoal(updatedGoal)
         }
     }
 
-    function showModal(component, goalId = false) {
-        if (component && goalId) {
-            const modalGoal = state.goals.find(goal => goal.id === goalId)
-            setModalGoal(modalGoal)
-            console.log(modalGoal)
-            dispatch({ type: 'SHOW_GOAL_MODAL', payload: goalId })
-        } else {
-            dispatch({ type: 'SHOW_CREATE_MODAL' })
-        }
+    function openGoalModal(goalId) {
+        const modalGoal = state.goals.find(goal => goal.id === goalId)
+        setModalGoal(modalGoal)
+        dispatch({ type: 'SHOW_GOAL_MODAL', payload: goalId })
     }
 
-    function openGoalModal(goalId) {
-        showModal('goal', goalId)
+    function openCreateModal() {
+        setCreateModalType(true)
+        dispatch({ type: 'SHOW_MODAL' })
     }
+
 
     function closeModal() {
         dispatch({ type: 'HIDE_MODAL' })
-        setModalGoal(modalGoal)
+        setTimeout(() => {
+            setCreateModalType(false)
+            setModalGoal({})
+        }, 250)
+    }
+
+    function handleCreateGoal(goal) {
+        dispatch({ type: 'UPDATE_GOAL', payload: [...state.goals, goal] })
+        onGoalsChanges([...state.goals, goal])
+        closeModal()
     }
 
     return (
         <Outer>
             <Modal
                 isOpen={state.modal.showing}
-                // className='goal-modal'
-                // onAfterOpen={this.afterOpenModal}
                 style={customStyles}
                 onRequestClose={closeModal}
                 contentLabel={`Details of `}
                 closeTimeoutMS={250}
             >
-                {modalGoal && (
+                {modalGoal && modalGoal.id && (
                     <GoalModalContent
-                        creator={members.find(member => member.name === modalGoal.createdBy)}
+                        creator={getContentAuthorProfile(modalGoal.createdBy, members)}
                         {...modalGoal}
                         members={members}
                         onCloseModal={closeModal}
@@ -120,16 +125,25 @@ export default function Goals({ goals, members, onGoalsChanges }) {
                     />
                 )
                 }
-            </Modal>
 
+                {createModalType && (
+                    <CreateGoalModalContent
+                        onCreateGoal={handleCreateGoal}
+                    />
+                )
+                }
+
+
+            </Modal>
+            <Button onClick={openCreateModal} secondary>Create</Button>
             {
-                goals.length === 0 ? (
+                state.goals.length === 0 ? (
                     <EmptyState>
                         <p>Lazy, there aren't any goals. Create one.</p>
                     </EmptyState>
                 ) :
                     state.goals.map((goal, i) => {
-                        const creator = members.find(member => member.name === goal.createdBy)
+                        const creator = getContentAuthorProfile(goal.createdBy, members)
                         return (
                             <Goal
                                 onEditGoal={handleEditGoal}
@@ -147,15 +161,14 @@ export default function Goals({ goals, members, onGoalsChanges }) {
 }
 
 const Outer = styled.div`
-    margin: 0 auto;
+            margin: 0 auto;
+            margin-top: 5rem;
     @media only screen and (min-width: 800px ) {
-        width: 70%;
-    }
-
-        @media only screen and (min-width: 1250px ) {
-        width: 50%;
-    }
-
+                width: 70%;
+        }
     
-   
+        @media only screen and (min-width: 1250px ) {
+                width: 50%;
+        }
+       
 `

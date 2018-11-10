@@ -4,6 +4,7 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import ProfilePhoto from '../shared/ProfilePhoto'
 import GoalCompleteButton from './GoalCompleteButton'
 import moment from 'moment'
+import { getContentAuthorProfile } from '../lib/helpers'
 export default function GoalModalContent({
     id,
     createdAt,
@@ -35,23 +36,25 @@ export default function GoalModalContent({
 
     function submitComment(e) {
         e.preventDefault()
-        const appData = JSON.parse(localStorage.getItem('zimpla-data'))
-        const { name } = appData.profile
-        const comment = {
-            publishedBy: name,
-            date: moment().format(),
-            text: commentText
+        if (commentText) {
+            const appData = JSON.parse(localStorage.getItem('zimpla-data'))
+            const { name } = appData.profile
+            const comment = {
+                publishedBy: name,
+                date: moment().format(),
+                text: commentText
+            }
+            onEditGoal(id, {
+                comments: [...comments, comment]
+            })
+            setCommentText('')
         }
-        onEditGoal(id, {
-            comments: [...comments, comment]
-        })
-
 
     }
 
 
     function renderComment({ publishedBy, date, text }) {
-        const publisher = members.find(member => member.name.toLowerCase() === publishedBy.toLowerCase())
+        const publisher = getContentAuthorProfile(publishedBy, members)
         return (
             <Comment key={publishedBy + date + text}>
                 <ProfilePhoto photo={publisher.photo} name={publisher.name} small />
@@ -74,7 +77,7 @@ export default function GoalModalContent({
                 </div>
                 <p>
                     <span>Created</span>
-                    {createdAt}
+                    {moment(createdAt).format('DD/MM/YYYY')}
                 </p>
             </CreationDetails>
 
@@ -82,7 +85,7 @@ export default function GoalModalContent({
             <CompletionDetails>
                 <p>
                     <span>Deadline</span>
-                    {deadline}
+                    {moment(deadline).format('DD/MM/YYYY')}
                 </p>
                 <GoalCompleteButton completed={completed} onToggle={toggleCompleted} />
 
@@ -181,8 +184,10 @@ const Comment = styled.div`
 `
 
 const CommentInput = styled.input`
-
+   &::placeholder {
     color: #9B9B9B;
+    }
+
     border-radius: 5px;
     display: block;
     width: 60%;

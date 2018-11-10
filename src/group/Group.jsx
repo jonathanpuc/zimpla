@@ -5,6 +5,7 @@ import * as styles from '../shared/styled'
 import PageHeading from '../shared/PageHeading'
 import GroupSymbol from '../shared/GroupSymbol'
 import Tabs from './Tabs'
+import Members from './Members'
 
 const Goals = lazy(() => import('./Goals'))
 
@@ -34,6 +35,7 @@ function Group({ match }) {
 
     }
     function handleGoalsChanges(goalsData) {
+        console.log(goalsData)
         handleGroupChange({ goals: goalsData })
     }
 
@@ -64,7 +66,7 @@ function Group({ match }) {
             </TabContent>
 
             <TabContent isVisible={visibleTab === 'members'}>
-                <div>Members</div>
+                <Members members={group.members} />
             </TabContent>
 
 

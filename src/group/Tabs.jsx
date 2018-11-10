@@ -49,6 +49,8 @@ const Tab = styled.div`
         text-transform: uppercase;
         text-align: center;
         font-weight: ${props => props.active ? '600' : '500'};
+        color: ${props => props.active ? 'inherit' : `${props.theme.colors.grey}`};
+        
         cursor: pointer;
         p {
             margin-bottom: 0px;

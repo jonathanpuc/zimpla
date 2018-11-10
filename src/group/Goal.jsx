@@ -4,6 +4,7 @@ import ProfilePhoto from '../shared/ProfilePhoto'
 import tick from '../img/tick.png'
 import tickGrey from '../img/tick-grey.png'
 import chat from '../img/chat.png'
+import moment from 'moment'
 export default function Goal({ creator, goal, onGoalOpen }) {
 
     function handleGoalOpen() {
@@ -20,7 +21,7 @@ export default function Goal({ creator, goal, onGoalOpen }) {
             </div>
 
             <GoalDescription>
-                <span>{goal.createdAt}</span>
+                <span>{moment(goal.createdAt).format('DD/MM/YYYY')}</span>
                 <p>{goal.description}</p>
             </GoalDescription>
             <Comments>

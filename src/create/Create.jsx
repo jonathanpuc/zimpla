@@ -5,6 +5,8 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { withRouter } from 'react-router-dom'
 import PageHeading from '../shared/PageHeading'
 import { mockGroup } from '../shared/mockData'
+import profileImage from '../img/starlord.png'
+
 function Create({ history }) {
 
     const [groupName, setGroupName] = useState('')
@@ -54,13 +56,16 @@ function Create({ history }) {
     }
 
     function finishOnboarding() {
+        console.log(groupMembers.map(member => ({ name: member, photo: '' })).unshift({ name: 'Starlord', photo: profileImage }))
         setComplete(true)
         setTimeout(() => history.push('/'), 500)
+        const members = groupMembers.map(member => ({ name: member, photo: '' }))
+        members.unshift({ name: 'Starlord', photo: profileImage })
         const group = {
             id: 'Gjqh782YohW928',
             name: groupName,
             description: groupDescription,
-            members: groupMembers.map(member => ({ name: member, photo: '' })),
+            members,
             messages: [],
             goals: []
         }
