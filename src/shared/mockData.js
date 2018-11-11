@@ -124,20 +124,28 @@ export const mockGroup = {
     ],
     messages: [
         {
-            publishedBy: 'Starlord',
-            text: "What's for Lunch?"
+            id: Date.now() + 1,
+            user: 'Starlord',
+            text: "What's for Lunch?",
+            createdAt: '04/20/2001'
         },
         {
-            publishedBy: 'Drax',
-            text: 'The blood of Thanos I hope'
+            id: Date.now() + 5,
+            user: 'Drax',
+            text: 'The blood of Thanos I hope',
+            createdAt: '04/23/2001'
         },
         {
-            publishedBy: 'Rocket',
-            text: "Uhh yeahh I'll stick with carrots"
+            id: Date.now() + 4,
+            user: 'Rocket',
+            text: "Uhh yeahh I'll stick with carrots",
+            createdAt: '04/24/2001'
         },
         {
-            publishedBy: 'Gamora',
-            text: 'Seriously, can we start using this app appropriately?!'
+            id: Date.now() + 6,
+            user: 'Gamora',
+            text: 'Seriously, can we start using this app appropriately?!',
+            createdAt: '04/24/2001'
         }
     ]
 }

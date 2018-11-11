@@ -34,7 +34,7 @@ export default function CreateGoalModalContent({ onCreateGoal }) {
     function handleDescriptionChange(e) {
         setGoalDescription(e.target.value)
     }
-    
+
     return (
         <Outer>
             <h3>Create goal</h3>
@@ -46,11 +46,6 @@ export default function CreateGoalModalContent({ onCreateGoal }) {
                 minDate={new Date()}
             />
             <Button onClick={submitGoal}>Done</Button>
-
-
-
-
-
         </Outer>
     )
 }

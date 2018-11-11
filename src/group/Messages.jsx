@@ -1,110 +1,113 @@
 
-import * as React from 'react'
-// import * as ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import React, { useState, useEffect, useRef } from 'react'
+import * as ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import styled from 'styled-components'
-// import * as moment from 'moment'
-// import sentMail from './sent-mail.png'
+import moment from 'moment'
+import sentMail from '../img/sent-mail.png'
 
-class Messenger extends React.Component {
+export default function Messages({ messages, onMessagesChanges }) {
 
-    state = {
-        messages: [],
-        messageText: '',
-        selectedMessage: 0
+    const messagesListEl = useRef(null)
+
+
+    useEffect(() => {
+        messagesListEl.current.scrollTop = messagesListEl.current.scrollHeight
+    }, [messages])
+
+
+    const appData = JSON.parse(localStorage.getItem('zimpla-data'))
+    const { name } = appData.profile
+
+    const [messageText, setMessageText] = useState('')
+    const [focusedMessage, setFocusedMessage] = useState(0)
+
+    function handleMessageInput(e) {
+        setMessageText(e.target.value)
     }
 
-    handleMessageInput = (e) => {
-
-        this.setState({ messageText: e.target.value })
-    }
-
-    sendMessage = (e) => {
+    function sendMessage(e) {
         e.preventDefault()
-        const { messageText } = this.state
+
         if (messageText) {
 
             const message = {
                 id: Date.now() + 1,
-                user: '1',
+                user: name,
                 text: messageText,
-                createdAt: Date.now(),
-                seenBy: ['s', 'asd']
+                createdAt: moment(Date.now()).format()
             }
-            const messages = [...this.state.messages, message]
 
-            this.setState({ messages, messageText: '' })
+            const updatedMessages = [...messages, message]
+
+            onMessagesChanges(updatedMessages)
+            setMessageText('')
             window.scrollTo(0, document.body.scrollHeight);
         }
-
     }
 
-    toggleSelectMessage = (id) => {
-        this.setState({
-            selectedMessage: this.state.selectedMessage !== id ? id : 0
-        })
+    function toggleFocusedMessage(id) {
+        setFocusedMessage(focusedMessage !== id ? id : 0)
     }
 
 
+    const renderMessages = messages.map((message, idx) => {
+        if (message.user.toLowerCase() === name.toLowerCase()) {
+            return (
+                <MessageOuter>
+                    {focusedMessage === message.id && (<MessageTimestamp>{moment(message.createdAt).calendar()}</MessageTimestamp>)}
+                    <UsersMessage key={idx} onClick={() => toggleFocusedMessage(message.id)} >
+                        <div style={{ padding: '20px' }}>{message.text}</div>
+                    </UsersMessage>
+                </MessageOuter >
+            )
+        } else {
+            return (
+                <MessageOuter>
+                    <Message>
+                        {message.text}
+                    </Message>
+                </MessageOuter>
+            )
+        }
+
+    })
 
 
-    render() {
+    return (
+        <Outer>
+            <MessageList ref={messagesListEl}>
+                <ReactCSSTransitionGroup
+                    transitionName="message"
+                    transitionEnterTimeout={500}
+                    transitionLeaveTimeout={300}>
 
-        const messages = this.state.messages.map((message, idx) => {
-            if (message.user === '1') {
-                return (
-                    <MessageOuter>
-                        {this.state.selectedMessage === message.id && (<MessageTimestamp>{moment(message.createdAt).calendar()}</MessageTimestamp>)}
-                        <UsersMessage key={idx} onClick={() => this.toggleSelectMessage(message.id)} >
-                            <div style={{ padding: '20px' }}>{message.text}</div>
-                        </UsersMessage>
-                    </MessageOuter >
-                )
-            } else {
-                return (
-                    <MessageOuter>
-                        <Message>
-                            {message.text}
-                        </Message>
-                    </MessageOuter>
-                )
-            }
+                    {renderMessages}
+                </ReactCSSTransitionGroup>
 
-        })
-        return (
-            <Outer>
-                <MessageList>
-                    <ReactCSSTransitionGroup
-                        transitionName="message"
-                        transitionEnterTimeout={500}
-                        transitionLeaveTimeout={300}>
-
-                        {messages}
-                    </ReactCSSTransitionGroup>
-
-                </MessageList>
+            </MessageList>
 
 
 
 
-                <Form onSubmit={this.sendMessage}>
+            <Form onSubmit={sendMessage}>
 
-                    <MessageInput>
-                        <div>
-                            <input type='text' value={this.state.messageText} onChange={this.handleMessageInput} placeholder='Aa' />
-                        </div>
+                <MessageInput>
+                    <div>
+                        <input type='text' value={messageText} onChange={handleMessageInput} placeholder='Aa' />
+                    </div>
 
-                        <button type='submit'>
-                            <img src={sentMail} alt="send message" />
-                        </button>
+                    <button type='submit'>
+                        <img src={sentMail} alt="send message" />
+                    </button>
 
-                    </MessageInput>
+                </MessageInput>
 
-                </Form>
+            </Form>
 
-            </Outer>
-        )
-    }
+        </Outer>
+    )
 }
+
 
 const MessageTimestamp = styled.span`
     @keyframes fadeIn {
@@ -158,13 +161,13 @@ const MessageInput = styled.div`
 
 const MessageList = styled.div`
     overflow: scroll;
-
+    max-height: 500px;
 `
 
 const Outer = styled.div`
     background-color: #F6F5F6;
-    height: 100vh;
-.message-enter {
+
+    .message-enter {
 
     > div:first-child {
         opacity: 0.01;
@@ -231,5 +234,3 @@ const Message = styled.div`
 
 
 `
-
-export default Messenger
