@@ -36,10 +36,12 @@ const Outer = styled.div`
 const UnderlineWrapper = styled.div`
     
     hr:first-child {
+        border-style: solid;
         width: 6.7rem;
     }
 
     hr:last-child {
+        border-style: solid;
         width: 3.35rem;
     }
 `

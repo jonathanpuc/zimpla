@@ -32,7 +32,6 @@ function Create({ history }) {
 
     useEffect(() => {
         document.querySelector('input').focus()
-        console.log('ran')
     }, [state.currentStage])
 
 

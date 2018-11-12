@@ -7,5 +7,5 @@ const Heading = styled.h2`
     text-transform: uppercase;
     font-size: 6.4rem;
     font-weight: 500;
-    color: #EEEEEE;
+    color: #d4d4d4;
 `

@@ -130,7 +130,7 @@ const MessageInput = styled.div`
     display: flex;
     justify-content: space-around;
     align-items: center;
-
+    box-shadow: 0 0 3pt 2pt #c8c8c8;
     input {
         min-height: 35px;
         max-height: 50px;
@@ -139,7 +139,7 @@ const MessageInput = styled.div`
         outline: none;
         padding-left: 15px;
         border-radius: 20px;
-        box-shadow: 0 0 3pt 2pt #c8c8c8;
+        box-shadow: none;
     }
 
     > div:first-child {
@@ -163,6 +163,7 @@ const MessageInput = styled.div`
 const MessageList = styled.div`
     overflow: scroll;
     max-height: 500px;
+    padding-bottom: 20rem;
 `
 
 const Outer = styled.div`
@@ -203,7 +204,7 @@ const Form = styled.form`
 `
 
 const MessageOuter = styled.div`
-    margin: 25px 0px;
+    margin: 20px 0px;
     display: flex;
     flex-direction: ${props => props.user ? 'column' : 'row'};
     align-items: ${props => props.user ? 'flex-end' : 'center'};
