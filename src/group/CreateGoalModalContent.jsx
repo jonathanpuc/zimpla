@@ -3,15 +3,13 @@ import styled from 'styled-components'
 import Calendar from 'react-calendar';
 import moment from 'moment'
 import Button from '../shared/Button'
+
 export default function CreateGoalModalContent({ onCreateGoal }) {
-
-
 
     const [goalDescription, setGoalDescription] = useState('')
     const [date, setDate] = useState(new Date())
 
     function submitGoal() {
-
         if (
             goalDescription && date
         ) {

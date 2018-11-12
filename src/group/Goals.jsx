@@ -132,8 +132,6 @@ export default function Goals({ goals, members, onGoalsChanges }) {
                     />
                 )
                 }
-
-
             </Modal>
             <Button onClick={openCreateModal} secondary>Create</Button>
             {
@@ -161,14 +159,14 @@ export default function Goals({ goals, members, onGoalsChanges }) {
 }
 
 const Outer = styled.div`
-            margin: 0 auto;
-            margin-top: 5rem;
+    margin: 0 auto;
+    margin-top: 5rem;
     @media only screen and (min-width: 800px ) {
                 width: 70%;
         }
     
-        @media only screen and (min-width: 1250px ) {
-                width: 50%;
-        }
+    @media only screen and (min-width: 1250px ) {
+            width: 50%;
+    }
        
 `

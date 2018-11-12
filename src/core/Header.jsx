@@ -1,9 +1,10 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 import profile from '../img/starlord.png'
 import ProfilePhoto from '../shared/ProfilePhoto'
 
-export default function Header() {
+function Header({ history }) {
   return (
     <Outer>
       <Container>
@@ -11,16 +12,17 @@ export default function Header() {
           <ProfilePhoto photo={profile} name="starlord" />
           <p>Starlord</p>
         </div>
-        <h1>Zimpla</h1>
+        <h1 onClick={() => history.push('/')}>Zimpla</h1>
       </Container>
     </Outer>
   )
 }
 
+export default withRouter(Header)
+
 const Outer = styled.div`
   border-bottom: 1px solid #cacaca;
 `
-
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
@@ -36,5 +38,6 @@ const Container = styled.div`
   h1 {
     font-size: 4.8rem;
     font-family: 'Permanent Marker', cursive;
+    cursor: pointer;
   }
 `

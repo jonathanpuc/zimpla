@@ -22,6 +22,4 @@ const Outer = styled.button`
     width: 120px;
     padding: 5px;
     cursor: pointer;
-}
-
 `

@@ -2,12 +2,20 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import rightArrow from '../img/right-arrow.png'
 import sentMail from '../img/sent-mail.png'
-export default function FormInputGroup({ placeholder, onSubmit, invites, margin }) {
+export default function FormInputGroup({ placeholder, onSubmit, invites, margin, validator }) {
     const [text, setText] = useState('')
 
     function handleSubmit(e) {
         e.preventDefault()
-        onSubmit(text)
+
+        if (validator) {
+            if (validator(text)) {
+                onSubmit(text)
+            }
+        } else {
+            onSubmit(text)
+        }
+
     }
 
     function handleTextChange(e) {

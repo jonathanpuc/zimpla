@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useState } from 'react'
+import React, { useState } from 'react'
 import { withRouter } from 'react-router-dom'
 import styled from 'styled-components'
 import * as styles from '../shared/styled'
@@ -7,8 +7,8 @@ import GroupSymbol from '../shared/GroupSymbol'
 import Tabs from './Tabs'
 import Members from './Members'
 import Messages from './Messages'
+import Goals from './Goals'
 
-const Goals = lazy(() => import('./Goals'))
 
 function Group({ match }) {
     const { id } = match.params
@@ -26,7 +26,6 @@ function Group({ match }) {
     }
 
     function handleGroupChange(changes) {
-
         let updatedGroup = appData.groups.find(group => group.id === id)
         updatedGroup = { ...updatedGroup, ...changes }
 
@@ -37,20 +36,15 @@ function Group({ match }) {
             return group
         })
 
-
-
         setGroup(updatedGroup)
-
         saveAppData({ groups: updatedGroups })
-
     }
-    function handleGoalsChanges(goalsData) {
 
+    function handleGoalsChanges(goalsData) {
         handleGroupChange({ goals: goalsData })
     }
 
     function handleMessagesChanges(messagesData) {
-
         handleGroupChange({ messages: messagesData })
     }
 
@@ -66,18 +60,15 @@ function Group({ match }) {
 
             <Tabs onTabChange={(tab) => setVisibleTab(tab)} />
             <TabContent isVisible={visibleTab === 'messages'}>
-                <Messages messages={groupData.messages} onMessagesChanges={handleMessagesChanges} />
-
+                <Messages messages={groupData.messages} onMessagesChanges={handleMessagesChanges} members={groupData.members} />
             </TabContent>
 
             <TabContent isVisible={visibleTab === 'goals'}>
-                <Suspense fallback={<div>Loading</div>}>
-                    <Goals
-                        goals={groupData.goals}
-                        members={groupData.members}
-                        onGoalsChanges={handleGoalsChanges}
-                    />
-                </Suspense>
+                <Goals
+                    goals={groupData.goals}
+                    members={groupData.members}
+                    onGoalsChanges={handleGoalsChanges}
+                />
             </TabContent>
 
             <TabContent isVisible={visibleTab === 'members'}>
@@ -90,7 +81,6 @@ function Group({ match }) {
 }
 
 const Outer = styled(styles.PageWrapper)`
-
 `
 
 const GroupHeader = styled.div`

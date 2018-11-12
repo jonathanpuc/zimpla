@@ -52,7 +52,6 @@ export default function GoalModalContent({
 
     }
 
-
     function renderComment({ publishedBy, date, text }) {
         const publisher = getContentAuthorProfile(publishedBy, members)
         return (
@@ -65,8 +64,6 @@ export default function GoalModalContent({
             </Comment>
         )
     }
-
-
 
     return (
         <div>
@@ -104,7 +101,6 @@ export default function GoalModalContent({
                     <CommentInput value={commentText} onChange={handleCommentInput} placeholder="Write a comment..." />
                 </form>
             </FormContainer>
-
         </div>
     )
 }
@@ -114,7 +110,6 @@ const FlexBetweenAlign = styled.div`
     justify-content: space-between;
     align-items: center;
 `
-
 
 const CreationDetails = styled(FlexBetweenAlign)`
     > div {
@@ -150,17 +145,14 @@ const CommentsList = styled.div`
     max-height: 300px;
     overflow: scroll;
 
-.comment-enter {
- opacity: 0.01;
+    .comment-enter {
+    
+    }
 
-}
-
-.comment-enter.comment-enter-active {
-    opacity: 1;
-    transition: opacity 500ms ease-in;
-
-}
-
+    .comment-enter.comment-enter-active {
+        opacity: 1;
+        transition: opacity 500ms ease-in;
+    }
 `
 
 const Comment = styled.div`

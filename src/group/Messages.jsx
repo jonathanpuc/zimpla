@@ -4,16 +4,15 @@ import * as ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import styled from 'styled-components'
 import moment from 'moment'
 import sentMail from '../img/sent-mail.png'
+import ProfilePhoto from '../shared/ProfilePhoto'
 
-export default function Messages({ messages, onMessagesChanges }) {
+export default function Messages({ messages, onMessagesChanges, members }) {
 
     const messagesListEl = useRef(null)
-
 
     useEffect(() => {
         messagesListEl.current.scrollTop = messagesListEl.current.scrollHeight
     }, [messages])
-
 
     const appData = JSON.parse(localStorage.getItem('zimpla-data'))
     const { name } = appData.profile
@@ -29,7 +28,6 @@ export default function Messages({ messages, onMessagesChanges }) {
         e.preventDefault()
 
         if (messageText) {
-
             const message = {
                 id: Date.now() + 1,
                 user: name,
@@ -38,7 +36,6 @@ export default function Messages({ messages, onMessagesChanges }) {
             }
 
             const updatedMessages = [...messages, message]
-
             onMessagesChanges(updatedMessages)
             setMessageText('')
             window.scrollTo(0, document.body.scrollHeight);
@@ -53,19 +50,28 @@ export default function Messages({ messages, onMessagesChanges }) {
     const renderMessages = messages.map((message, idx) => {
         if (message.user.toLowerCase() === name.toLowerCase()) {
             return (
-                <MessageOuter>
+                <MessageOuter user={true} key={message.id} >
                     {focusedMessage === message.id && (<MessageTimestamp>{moment(message.createdAt).calendar()}</MessageTimestamp>)}
-                    <UsersMessage key={idx} onClick={() => toggleFocusedMessage(message.id)} >
-                        <div style={{ padding: '20px' }}>{message.text}</div>
+                    <UsersMessage onClick={() => toggleFocusedMessage(message.id)} >
+                        <div>{message.text}</div>
                     </UsersMessage>
                 </MessageOuter >
             )
         } else {
+            const author = members.find(member => member.name.toLowerCase() === message.user.toLowerCase())
             return (
-                <MessageOuter>
-                    <Message>
-                        {message.text}
-                    </Message>
+                <MessageOuter user={false} key={message.id}>
+                    <div>
+                        <ProfilePhoto photo={author.photo} name={author.name} small />
+                    </div>
+                    <div>
+                        {focusedMessage === message.id && (<MessageTimestamp>{moment(message.createdAt).calendar()}</MessageTimestamp>)}
+                        <Message onClick={() => toggleFocusedMessage(message.id)}>
+                            <div>
+                                {message.text}
+                            </div>
+                        </Message>
+                    </div>
                 </MessageOuter>
             )
         }
@@ -80,26 +86,19 @@ export default function Messages({ messages, onMessagesChanges }) {
                     transitionName="message"
                     transitionEnterTimeout={500}
                     transitionLeaveTimeout={300}>
-
                     {renderMessages}
                 </ReactCSSTransitionGroup>
 
             </MessageList>
 
-
-
-
             <Form onSubmit={sendMessage}>
-
-                <MessageInput>
+                <MessageInput messageText={messageText}>
                     <div>
                         <input type='text' value={messageText} onChange={handleMessageInput} placeholder='Aa' />
                     </div>
-
                     <button type='submit'>
                         <img src={sentMail} alt="send message" />
                     </button>
-
                 </MessageInput>
 
             </Form>
@@ -131,31 +130,33 @@ const MessageInput = styled.div`
     display: flex;
     justify-content: space-around;
     align-items: center;
+
     input {
         min-height: 35px;
         max-height: 50px;
         overflow: scroll;
         border: none;
-        padding-left: 5px;
+        outline: none;
+        padding-left: 15px;
         border-radius: 20px;
+        box-shadow: 0 0 3pt 2pt #c8c8c8;
     }
 
     > div:first-child {
         width: 75%;
     }
 
-
-
-        button {
-            background-color: #EDEFF0;
-            border-radius: 50%;
-            height: 30px;
-            width: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: none;
-        }
+    button {
+        background-color: ${props => props.messageText ? props.theme.colors.blue : '#EDEFF0'};
+        border-radius: 50%;
+        height: 30px;
+        width: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        transition: background-color 0.5s ease-in;
+    }
 
 `
 
@@ -165,36 +166,33 @@ const MessageList = styled.div`
 `
 
 const Outer = styled.div`
-    background-color: #F6F5F6;
+    background-color: #fff;
 
     .message-enter {
-
-    > div:first-child {
-        opacity: 0.01;
-  transform: scale(0.7);
+        > div:first-child {
+            opacity: 0.01;
+            transform: scale(0.7);
+        }
     }
 
-}
+    .message-enter.message-enter-active {
 
-.message-enter.message-enter-active {
-
-    > div:first-child {
-        opacity: 1;
-  transform: scale(1);
-  transition: opacity 500ms ease-in,
-  transform 500ms ease-in;
+        > div:first-child {
+            opacity: 1;
+            transform: scale(1);
+            transition: opacity 500ms ease-in,
+            transform 500ms ease-in;
+        }
     }
 
-}
+    .message-leave {
+    opacity: 1;
+    }
 
-.message-leave {
-  opacity: 1;
-}
-
-.message-leave.message-leave-active {
-  opacity: 0.01;
-  transition: opacity 300ms ease-in;
-}
+    .message-leave.message-leave-active {
+    opacity: 0.01;
+    transition: opacity 300ms ease-in;
+    }
 `
 
 const Form = styled.form`
@@ -202,17 +200,18 @@ const Form = styled.form`
     bottom: 30px;
     left: 50%;
     transform: translate(-50%);
-
 `
 
 const MessageOuter = styled.div`
-    margin: 5px;
+    margin: 25px 0px;
     display: flex;
-    flex-direction: column;
-    align-items: flex-end;
+    flex-direction: ${props => props.user ? 'column' : 'row'};
+    align-items: ${props => props.user ? 'flex-end' : 'center'};
+    >div:last-child {
+        display: flex;
+        flex-direction: ${props => props.user ? 'row' : 'column'};
+    }
 `
-
-
 
 const UsersMessage = styled.div`
 	background: #3385ff;
@@ -224,13 +223,14 @@ const UsersMessage = styled.div`
     min-width: 120px;
     max-width: 200px;
     color: #fff;
+    > div:first-child {
+        padding: 10px;
+    }
 
 `
 
-const Message = styled.div`
-
-	background: #3385ff;
-	border-radius: .4em;
-
-
+const Message = styled(UsersMessage)`
+    color: #000;
+	background: #f1f0f0;
+	border-radius: 20px 20px 20px 0px;
 `

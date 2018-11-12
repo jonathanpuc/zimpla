@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from 'react'
+import React, { useReducer, useState, useEffect } from 'react'
 import styled from 'styled-components'
 import FormInputGroup from './FormInputGroup'
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom'
 import PageHeading from '../shared/PageHeading'
 import { mockGroup } from '../shared/mockData'
 import profileImage from '../img/starlord.png'
+import { validateEmail } from '../lib/helpers'
 
 function Create({ history }) {
 
@@ -28,6 +29,11 @@ function Create({ history }) {
     }, {
             currentStage: 1,
         })
+
+    useEffect(() => {
+        document.querySelector('input').focus()
+        console.log('ran')
+    }, [state.currentStage])
 
 
     function nextStage() {
@@ -110,7 +116,7 @@ function Create({ history }) {
                 <p>Not much of a group if it’s just you. Let’s expand.</p>
                 <p>Invite your fellow masterminds</p>
             </Instructions>
-            <FormInputGroup margin onSubmit={handleSubmit} placeholder='Antman@gmail.com' invites={true} />
+            <FormInputGroup margin onSubmit={handleSubmit} placeholder='Antman@gmail.com' invites={true} validator={validateEmail} />
 
         </div>
     )

@@ -5,7 +5,6 @@ export default function Members({ members }) {
 
     return (
         <Outer>
-
             {members.map((member, i) =>
                 <MemberBlock key={i}>
                     <ProfilePhoto photo={member.photo} name={member.name} large noMargin />

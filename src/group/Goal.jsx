@@ -19,7 +19,6 @@ export default function Goal({ creator, goal, onGoalOpen }) {
                 </Checkbox>
                 <ProfilePhoto {...creator} />
             </div>
-
             <GoalDescription>
                 <span>{moment(goal.createdAt).format('DD/MM/YYYY')}</span>
                 <p>{goal.description}</p>
